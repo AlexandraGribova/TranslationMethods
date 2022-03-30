@@ -1,9 +1,8 @@
 int main()
 {
-a3=2;//aa
-a=2;
-/*ghshshs*/
-
+int a1=1;//There are no warnings
+int a2=2;
+/*Any text in english you want*/
 }
 
 
