@@ -1,0 +1,2 @@
+int x=8;//ghshshs
+/*shsjs*/
