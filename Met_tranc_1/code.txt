@@ -4,5 +4,3 @@ int a1=1;//There are no warnings
 int a2=2;
 /*Any text in english you want*/
 }
-
-

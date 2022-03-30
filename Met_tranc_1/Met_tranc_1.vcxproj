@@ -148,6 +148,7 @@
     <Text Include="separators.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LexicalAnalyzer.h" />
     <ClInclude Include="Tables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
