@@ -1,13 +1,13 @@
 ﻿  Met_tranc_1.cpp
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(78,37): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(105,27): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(118,44): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(134,27): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(147,37): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(80,37): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(107,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(120,44): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(136,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(149,37): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(19,38): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(18,16): warning C4101: pos: неиспользованная локальная переменная
 C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(18,13): warning C4101: i: неиспользованная локальная переменная
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(172,26): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(173,27): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(192,31): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(174,26): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(175,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Met_tranc_1.cpp(201,23): warning C4018: <: несоответствие типов со знаком и без знака
   Met_tranc_1.vcxproj -> C:\Users\sasha\source\repos\Met_tranc_1\Debug\Met_tranc_1.exe

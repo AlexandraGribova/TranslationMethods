@@ -1,2 +1,9 @@
-int x=8;//ghshshs
-/*shsjs*/
+int main()
+{
+a3=2;//aa
+a=2;
+/*ghshshs*/
+
+}
+
+

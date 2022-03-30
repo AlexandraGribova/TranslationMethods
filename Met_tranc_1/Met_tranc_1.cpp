@@ -63,7 +63,8 @@ class LexicalAnalyzer {
         ways[0].push_back({ { '/' }, 5 });
         ways[0].push_back({ oper_signs_compare.get_array(), 6,OPER_COMPARE });
         ways[0].push_back({ oper_signs_arith.get_array(), 7,OPER_ARITH });
-        //иначе ошибка Как насчет сдеалть код ошибки 90,91,92 - всегда с 9? 
+        ways[0].push_back({ { '\n' }, 0 });
+        //иначе ошибка 
 
         ways[1].push_back({ separators.get_array(),0, SEPARATOR });//аналогично вообще для всех букв из while и int
         ways[1].push_back({ {'h'}, 12 });
@@ -117,10 +118,10 @@ class LexicalAnalyzer {
 
        
 
-        ways[10].push_back({ {"иначе"},10});
+        ways[10].push_back({ all,10});
         ways[10].push_back({ { '\n' },0 });
 
-        ways[11].push_back({ {"иначе"},11 });
+        ways[11].push_back({ all,"*",11});
         ways[11].push_back({ { '*' },17 });
 
         ways[12].push_back({ separators.get_array(),0, SEPARATOR });//аналогично вообще для всех букв из while и int
@@ -142,7 +143,7 @@ class LexicalAnalyzer {
         //иначе ошибка
 
         ways[14].push_back({ separators.get_array(),0, SEPARATOR });//аналогично вообще для всех букв из while и int
-        ways[14].push_back({ {'e'}, 14 });//НУ ВОТ И ЧЕ ДАЛЬШЕ???
+        ways[14].push_back({ {'e'}, 0});//НУ ВОТ И ЧЕ ДАЛЬШЕ???
         ways[14].push_back({ alphabet,"e", 3 });//удаляет из алфавита t 
         ways[14].push_back({ numbers, 3 });
         ways[14].push_back({ { '/' }, 5 });
@@ -151,7 +152,7 @@ class LexicalAnalyzer {
         //иначе ошибка
 
         ways[16].push_back({ separators.get_array(),0, SEPARATOR });
-        ways[16].push_back({ {'t'}, 16 });//НУ ВОТ И ЧЕ ДАЛЬШЕ???
+        ways[16].push_back({ {'t'}, 0 });//НУ ВОТ И ЧЕ ДАЛЬШЕ???
         ways[16].push_back({ alphabet,"t", 3 });
         ways[16].push_back({ numbers, 3 });
         ways[16].push_back({ { '/' }, 5 });
@@ -164,7 +165,10 @@ class LexicalAnalyzer {
         ways[17].push_back({ { '/' },0 });
     }
 public:
-
+    LexicalAnalyzer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith)
+    {
+        run_dfa(keywords, separators, oper_signs_compare, oper_signs_arith);
+    }
     int search_letter(char letter, int k) 
 {
        for (int i = 0; i < ways[k].size(); i++)
@@ -179,17 +183,32 @@ public:
     void run_dfa(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith)
     {
         state_diagram(keywords, separators, oper_signs_compare, oper_signs_arith);
-        string word;
-        ifstream const_file;
-        const_file.open("code.txt");
-        while (true)
+        char word;
+        ifstream code;
+        code.open("code.txt");
+        int  line=1;
+        string code_text;;
+        string str;
+        while (getline(code, str))
         {
-            const_file >> word;
-            //разбивае на буквы
-            int k = 0; //
-            for (int i = 0; i < word.length(); i++)
-                k=search_letter(word[i], k);         
-
+            str += "\n";
+            code_text += str;
+        }
+        str.clear();
+        for (char c : code_text) if (c != ' ') str += c;//удаление пробелов из code_text
+        code_text = str;
+        int k = 0;
+        for(int j=0; j< code_text.size();j++)
+        {
+            word = code_text[j];
+            if (word == '\n') line++;//если мы встретили '\n' значит перешли на следующую строку-> текущая строка = line
+             k = search_letter(word, k);
+                if (k == -1)
+                {
+                    cout << "ERROR in line "<<line;
+                    break;
+                }
+          
         }
     }
     
@@ -202,9 +221,8 @@ int main()
     
     ConstantTable keywords("keywords.txt", 2, 0);
     ConstantTable separators("separators.txt", 6, 1);
-    ConstantTable oper_signs_compare("oper_signs.txt", 5, 2);
-    ConstantTable oper_signs_arith("oper_signs.txt", 2, 3);
-    LexicalAnalyzer d;
-    d.run_dfa(keywords, separators, oper_signs_compare, oper_signs_arith);
+    ConstantTable oper_signs_compare("oper_signs_compare.txt", 5, 2);
+    ConstantTable oper_signs_arith("oper_signs_arith.txt", 2, 3);
+    LexicalAnalyzer lexical_analyzer(keywords, separators, oper_signs_compare, oper_signs_arith);
     
 }
