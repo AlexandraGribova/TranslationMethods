@@ -296,10 +296,11 @@ public:
         state_diagram(keywords, separators, oper_signs_compare, oper_signs_arith);
         char letter;
         string word;
+        string comp_sign;//
         ifstream code;
         code.open("code.txt");
         int  line = 1;
-        string code_text;;
+        string code_text;
         string str;
         while (getline(code, str))
         {
@@ -324,7 +325,7 @@ public:
                 cout << "ERROR in line " << line;
                 break;
             }
-            take_token(token_out,letter, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+            if(k!=5 && k!=10 && k!=11) take_token(token_out,letter, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
 
         }
         token_out.close();
