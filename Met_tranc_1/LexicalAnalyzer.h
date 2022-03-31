@@ -106,6 +106,7 @@ class LexicalAnalyzer {
         ways[6].push_back({ alphabet, 3 });
         ways[6].push_back({ numbers, 4 });
         ways[6].push_back({ { '/' }, 5 });
+        ways[6].push_back({ oper_signs_compare.get_array(), 6,OPER_COMPARE });
         //иначе ошибка
 
 
@@ -197,7 +198,7 @@ public:
                 }
         return -1;
     }
-    void take_token(ostream& token_out,char letter, string &word, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants constants, VariableTableIdentifier identifier)
+    void take_token(ostream& token_out,char letter, char next, string &sign_comp, string &word, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants constants, VariableTableIdentifier identifier)
     {
         Token token, token1;
         string str;//str строка содержащая символ
@@ -251,8 +252,22 @@ public:
                         }
 
                 }
-                token_out << str << " (" << token.i << "," << token.j << ")" << endl;
+                if (sign_comp.length() == 0)
+                {
+                    token1 = oper_signs_compare.search_str(str+next);//если следующий символ тоже знак сравнения 
+                    if (token1.j == -1) 
+                        token_out << str << " (" << token.i << "," << token.j << ")" << endl;
+                    else 
+                        sign_comp = letter;
+                }
+                else
+                {
+                    token = oper_signs_compare.search_str(sign_comp+letter);
+                    token_out << sign_comp+letter << " (" << token.i << "," << token.j << ")" << endl;
+                    sign_comp.clear();
+                }
                 break; 
+
             }
 
 
@@ -295,8 +310,8 @@ public:
     {
         state_diagram(keywords, separators, oper_signs_compare, oper_signs_arith);
         char letter;
+        string sign_comp;
         string word;
-        string comp_sign;//
         ifstream code;
         code.open("code.txt");
         int  line = 1;
@@ -325,7 +340,7 @@ public:
                 cout << "ERROR in line " << line;
                 break;
             }
-            if(k!=5 && k!=10 && k!=11) take_token(token_out,letter, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+            if(k!=5 && k!=10 && k!=11) take_token(token_out,letter,code_text[j+1], sign_comp, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
 
         }
         token_out.close();

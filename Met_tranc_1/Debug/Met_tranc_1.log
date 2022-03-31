@@ -5,13 +5,13 @@ C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(125,44): warning C4
 C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(141,27): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\Tables.h(154,37): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(19,43): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(191,27): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(192,31): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(213,39): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(220,39): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(238,39): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(245,39): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(264,39): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(271,39): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(315,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(192,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(193,31): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(214,39): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(221,39): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(239,39): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(246,39): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(279,39): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(286,39): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\sasha\source\repos\Met_tranc_1\Met_tranc_1\LexicalAnalyzer.h(331,27): warning C4018: <: несоответствие типов со знаком и без знака
   Met_tranc_1.vcxproj -> C:\Users\sasha\source\repos\Met_tranc_1\Debug\Met_tranc_1.exe
