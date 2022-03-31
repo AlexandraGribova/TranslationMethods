@@ -198,7 +198,7 @@ public:
                 }
         return -1;
     }
-    void take_token(ostream& token_out,char letter, char next, string &sign_comp, string &word, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants constants, VariableTableIdentifier identifier)
+    void take_token(ostream& token_out,char letter, char next, string &sign_comp, string &word, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)
     {
         Token token, token1;
         string str;//str строка содержащая символ
@@ -206,6 +206,7 @@ public:
         str = str + letter;
         while (true)
         {
+            if (letter == '/') break;
             token = separators.search_str(str);//Если нашли символ среди разделителей
             if (token.j != -1) 
             { 
@@ -340,7 +341,7 @@ public:
                 cout << "ERROR in line " << line;
                 break;
             }
-            if(k!=5 && k!=10 && k!=11) take_token(token_out,letter,code_text[j+1], sign_comp, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+            if(k!=5 && k!=10 && k!=11 && k!=17) take_token(token_out,letter,code_text[j+1], sign_comp, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
 
         }
         token_out.close();

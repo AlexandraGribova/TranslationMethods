@@ -1,2 +1,2 @@
-int a<=0;//aaa
-int a+1<0;
+int a=0;/*ffff*/
+int b=1;
