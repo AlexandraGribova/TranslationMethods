@@ -282,7 +282,7 @@ public:
             }
             
             //если это уже точно не разделитель и не знак операции
-            word = word + letter;
+            if(letter!='\n') word = word + letter;
 
             token = keywords.search_str(word);
             if (token.j != -1){ token_out << word << " (" << token.i << "," << token.j << ")" << endl; word.clear(); break;  }//≈сли нашли слово среди ключевых            
