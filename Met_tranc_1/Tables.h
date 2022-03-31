@@ -70,9 +70,13 @@ public:
     {
         int i = 0;
         Token token;
+        string word;
         for (i = 0; i < N; i++)
-            if (array[i] == str)
+        {
+            word = array[i];
+            if (word == str)
                 return Token(i, j);
+        }
         return token;
     }
 
