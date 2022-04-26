@@ -8,7 +8,7 @@ using namespace std;
 const int KEY_WORD = 0, SEPARATOR = 1, OPER_ARITH = 2, OPER_COMPARE = 3, VARIABLE = 4, CONSTANT = 5, NULL_TOKEN = 6, UNDEFIND = 7;
 const string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const string numbers = "0123456789";
-const string all = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-<>=*/";
+const string all = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-<>=*/(){};";
 
 struct Identifier
 {
@@ -151,7 +151,7 @@ public:
     }
     string search_num(Token token)
     {
-        if (token.j == 5 && token.i < identifier.size())
+        if (token.j == VARIABLE && token.i < identifier.size())
             return identifier[token.i].name;
         return "NULL";
     }

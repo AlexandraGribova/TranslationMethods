@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Met_tranc_1.cpp" />
+    <ClCompile Include="SyntacticAnalyzer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="code.txt" />
     <Text Include="keywords.txt" />
     <Text Include="oper_signs.txt" />
     <Text Include="separators.txt" />
+    <Text Include="table.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LexicalAnalyzer.h" />

@@ -1,2 +1,5 @@
-int a=0;/*ffff*/
-int b=1;
+int main()
+
+int a;
+/*a=r;*/
+}

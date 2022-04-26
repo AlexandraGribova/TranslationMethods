@@ -6,7 +6,6 @@
 #include<fstream>
 #include "Tables.h"
 using namespace std;
-
 struct probable_way
 {
     string str;
@@ -183,7 +182,7 @@ class LexicalAnalyzer {
         ways[17].push_back({ { '/' },0 });
     }
 public:
-    LexicalAnalyzer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants constants,VariableTableIdentifier identifier)
+    LexicalAnalyzer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants,VariableTableIdentifier &identifier)
     {
         run_dfa(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
     }
@@ -216,19 +215,22 @@ public:
                         if (alphabet.at(j) == word[0])//Если мы нашли в алфавите первый символ слова то это точно идентификатор
                         {
                             token1 = identifier.search_str(word);
-                            token_out << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            cout<< word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
                     for (int j = 0; j < numbers.size(); j++)
                         if (numbers.at(j) == word[0])//Если мы нашли в перчне циферок первый символ слова то это точно константа
                         {
                             token1 = constants.search_str(word);
-                            token_out << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            token_out << token1.i << " " << token1.j <<endl;
                             word.clear();
                         }
                     
                 }
-                token_out << str<<" ("<<token.i<<","<<token.j<<")" << endl;
+                cout << str << " (" << token.i << "," << token.j << ")" << endl;
+                token_out <<token.i<<" "<<token.j<< endl;
                 break; 
             }
 
@@ -241,14 +243,16 @@ public:
                         if (alphabet.at(j) == word[0])//Если мы нашли в алфавите первый символ слова то это точно идентификатор
                         {
                             token1 = identifier.search_str(word);
-                            token_out << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
                     for (int j = 0; j < numbers.size(); j++)
                         if (numbers.at(j) == word[0])//Если мы нашли в перчне циферок первый символ слова то это точно константа
                         {
                             token1 = constants.search_str(word);
-                            token_out << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
 
@@ -256,15 +260,19 @@ public:
                 if (sign_comp.length() == 0)
                 {
                     token1 = oper_signs_compare.search_str(str+next);//если следующий символ тоже знак сравнения 
-                    if (token1.j == -1) 
-                        token_out << str << " (" << token.i << "," << token.j << ")" << endl;
+                    if (token1.j == -1)
+                    {
+                        cout << str << " (" << token.i << "," << token.j << ")" << endl;
+                        token_out << token.i << " " << token.j << endl;
+                    }
                     else 
                         sign_comp = letter;
                 }
                 else
                 {
                     token = oper_signs_compare.search_str(sign_comp+letter);
-                    token_out << sign_comp+letter << " (" << token.i << "," << token.j << ")" << endl;
+                    cout << sign_comp + letter << " (" << token.i << "," << token.j << ")" << endl;
+                    token_out  << " (" << token.i << " " << token.j <<endl;
                     sign_comp.clear();
                 }
                 break; 
@@ -281,19 +289,22 @@ public:
                         if (alphabet.at(j) == word[0])//Если мы нашли в алфавите первый символ слова то это точно идентификатор
                         {
                             token1 = identifier.search_str(word);
-                            token_out << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            token_out  << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
                     for (int j = 0; j < numbers.size(); j++)
                         if (numbers.at(j) == word[0])//Если мы нашли в перчне циферок первый символ слова то это точно константа
                         {
                             token1 = constants.search_str(word);
-                            token_out << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
 
                 }
-                token_out << str << " (" << token.i << "," << token.j << ")" << endl;
+                cout << str << " (" << token.i << "," << token.j << ")" << endl;
+                token_out << token.i << " " << token.j  << endl;
                 break;
             }
             
@@ -301,13 +312,13 @@ public:
             if(letter!='\n') word = word + letter;
 
             token = keywords.search_str(word);
-            if (token.j != -1){ token_out << word << " (" << token.i << "," << token.j << ")" << endl; word.clear(); break;  }//Если нашли слово среди ключевых            
+            if (token.j != -1){ cout << word << " (" << token.i << "," << token.j << ")" << endl; token_out << token.i << " " << token.j<< endl; word.clear(); break;  }//Если нашли слово среди ключевых            
             
             break;
         }
     }
 
-    void run_dfa(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants constants, VariableTableIdentifier identifier)
+    void run_dfa(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)
     {
         state_diagram(keywords, separators, oper_signs_compare, oper_signs_arith);
         char letter;
@@ -335,14 +346,15 @@ public:
             if (letter == '\n') line++;//если мы встретили '\n' значит перешли на следующую строку-> текущая строка = line
             k = search_letter(letter, k);
             //поверка на токен и ошибку
-
-            if (k == -1)
+            if (k != 5 && k != 10 && k != 11 && k != 17 )
             {
-                cout << "ERROR in line " << line;
-                break;
+                if (k == -1)
+                {
+                    cout << "ERROR in line " << line;
+                    break;
+                }
+                take_token(token_out, letter, code_text[j + 1], sign_comp, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
             }
-            if(k!=5 && k!=10 && k!=11 && k!=17) take_token(token_out,letter,code_text[j+1], sign_comp, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
-
         }
         token_out.close();
     }

@@ -18,6 +18,9 @@
     <ClCompile Include="Met_tranc_1.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="SyntacticAnalyzer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="keywords.txt" />
@@ -26,6 +29,7 @@
     <Text Include="code.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
+    <Text Include="table.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tables.h">
