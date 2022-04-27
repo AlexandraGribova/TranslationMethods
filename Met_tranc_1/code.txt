@@ -1,11 +1,9 @@
 int main()
 {
-int b=1+5;
-int d=1+1;
-int c=1-b+1;
-int b=0;
-while(a<=b)
+int b;
+while(1)
 {
+int s=3;
 }
-/*a=r;*/
+s=2;
 }

@@ -38,7 +38,7 @@ private:
 	bool check(Token this_token, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)//если введенный токен есть в текущей позиции таблицы то все круто 
 	{
 		string command;
-		command= keywords.search_num(this_token);//как быть с var и const
+		command= keywords.search_num(this_token);
 		if (command == "NULL") command = separators.search_num(this_token);
 		if (command == "NULL") command = oper_signs_compare.search_num(this_token);
 		if (command == "NULL") command = oper_signs_arith.search_num(this_token);
@@ -105,6 +105,94 @@ private:
 		}
 		return 0;
 	}
+
+	string get_name(Token this_token, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)
+	{
+		string command;
+		command = keywords.search_num(this_token);
+		if (command == "NULL") command = separators.search_num(this_token);
+		if (command == "NULL") command = oper_signs_compare.search_num(this_token);
+		if (command == "NULL") command = oper_signs_arith.search_num(this_token);
+		if (command == "NULL")
+		{
+			command = constants.search_num(this_token);
+			if (command != "NULL") command = "const";
+		}
+		if (command == "NULL")
+		{
+			command = identifier.search_num(this_token);
+			if (command != "NULL" && command != "main") command = "var";
+		}
+		return command;
+	}
+
+	void check_situation(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)
+	{
+		bool is_it_while = false;
+		vector <int> var_in_while;
+		int round_brackets_balance = 0;
+		int curly_brackets_balance = 0;
+		int curly_brackets_balance_while = 0;
+		for (int i = 0; i < TokensInput.size(); i++)
+		{
+			string command;
+			Token this_token = TokensInput[i];
+			command = get_name(this_token, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+			//Нашли имя идентификатора/чего бы то ни было с чем работаем и пустили проверку
+			if (command == "while")
+			{
+				round_brackets_balance = 0;
+				curly_brackets_balance_while=0;
+				is_it_while = true;
+			}
+			
+			if (is_it_while)//если мы в цикле
+			{
+				if (command == "(")	round_brackets_balance++;
+				if (command == ")")	round_brackets_balance--;
+				if (command == "{")	curly_brackets_balance_while++;
+				if (command == "}" && round_brackets_balance == 0) 
+				{ 
+					is_it_while = false; 
+					curly_brackets_balance_while--; 
+					for(int s=0; s< var_in_while.size(); s++)
+					{
+						identifier.add_ident(var_in_while[s], 0, 0);
+					}
+					var_in_while.clear();
+				}
+			}
+			else//если вне цикла
+			{
+				if (command == "{") curly_brackets_balance++;
+				if (command == "}") curly_brackets_balance--;
+			}
+			if (command == "int")
+			{
+				
+				command = get_name(TokensInput[i+2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+				if (command == "=")
+				{
+					command = get_name(TokensInput[i + 3], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+					identifier.add_ident(TokensInput[i + 1].i, 1, 1, atoi(command.c_str()));
+				}
+				else
+					identifier.add_ident(TokensInput[i + 1].i, 0, 1);
+				if (is_it_while) var_in_while.push_back(TokensInput[i + 1].i);//если мы внутри цикла то пихаем переменную в стек
+			}
+
+			if (command == "var")//проверка инициализировали ли мы переменную
+			{
+				if (identifier.check_int(TokensInput[i]) == 0)
+				{
+					cout << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized."<<endl;
+				}
+			}
+		}
+		if (curly_brackets_balance_while!=0 || curly_brackets_balance!=0) cout << "Error. The bracket is lost. Probably cycle wasn't closed."<<endl;
+
+		
+	}
 public:
 	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)//Инициализация таблицы
 	{
@@ -153,7 +241,10 @@ public:
 			}
 			table_parser.push_back(elem);
 		}
-		analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+		if (!analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier))//проверка по таблице
+		{
+			check_situation(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+		}
 	}
 
 	

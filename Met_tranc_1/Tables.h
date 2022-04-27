@@ -135,6 +135,12 @@ private:
     vector <Identifier> identifier;//структура содержит имя переменной, тип(0-тип не задан, 1- тип int) и численное значение переменной
 
 public:
+    bool check_int(Token token)
+    {
+        if (identifier[token.i].type == true) return 1;
+        else return 0;
+    }
+
     Token search_str(string data)//поиск среди констант по имени, если не найдена, то добавление
     {
         Token token;
@@ -163,6 +169,7 @@ public:
             identifier[i].value = value;
         }
         if (type) identifier[i].type = 1;
+        if(!type) identifier[i].type = 0;
     }
     Identifier get(int i)
     {
