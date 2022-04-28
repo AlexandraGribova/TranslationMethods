@@ -58,7 +58,7 @@ private:
 		}
 		return false;
 	}
-	int analizer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)
+	int analizer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier, ofstream &errors_file)
 	{
 		now_state = 0;
 		st_int.push(-1);
@@ -93,7 +93,8 @@ private:
 			{
 				if (table_parser[now_state].error)//Если ничего не нашли а error=1 то чет не то происходит
 				{
-					cout << "Error" << endl;
+					errors_file << "Error. Unexpected token: (" << TokensInput[stat].i << "," << TokensInput[stat].j << ")" << endl;
+					cout << "Error. Unexpected token: ("<< TokensInput[stat].i<<","<< TokensInput[stat].j<<")"<< endl;
 					return -1;
 				}
 				else //Есл ничего не нашли а error=0 то просто смотрим следующую строку таблицы, там может быть все ок
@@ -126,7 +127,7 @@ private:
 		return command;
 	}
 
-	void check_situation(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)
+	void check_situation(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& errors_file)
 	{
 		bool is_it_while = false;
 		vector <int> var_in_while;
@@ -185,17 +186,24 @@ private:
 			{
 				if (identifier.check_int(TokensInput[i]) == 0)
 				{
+					errors_file << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized." << endl;
 					cout << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized."<<endl;
 				}
 			}
 		}
-		if (curly_brackets_balance_while!=0 || curly_brackets_balance!=0) cout << "Error. The bracket is lost. Probably cycle wasn't closed."<<endl;
+		if (curly_brackets_balance_while != 0 || curly_brackets_balance != 0)
+		{
+			errors_file<< "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
+			cout << "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
+		}
 
 		
 	}
 public:
 	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)//Инициализация таблицы
 	{
+		ofstream errors_file;
+		errors_file.open("Errors.txt", ios::app);//Дописать в файл
 		TokenInput();//для входного массива токенов
 		string el[7];//для каждого отдельного куска строки (терминал, куда прыгнуть, accept и т д)
 		ifstream table_file;
@@ -241,10 +249,12 @@ public:
 			}
 			table_parser.push_back(elem);
 		}
-		if (!analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier))//проверка по таблице
+		if (!analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file))//проверка по таблице
 		{
-			check_situation(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+			check_situation(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file);
 		}
+
+		errors_file.close();
 	}
 
 	

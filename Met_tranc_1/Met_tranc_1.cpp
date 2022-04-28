@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include<fstream>
+int errors = 0;
 #include "Tables.h"
 #include "LexicalAnalyzer.h"
 #include "SyntacticAnalyzer.cpp"
@@ -19,5 +20,5 @@ int main()
     VariableTableConstants constants;
     VariableTableIdentifier identifier;
     LexicalAnalyzer lexical_analyzer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
-    SyntacticAnalyzer syntactic_analyzer("table.txt", keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+    if(errors==0) SyntacticAnalyzer syntactic_analyzer("table.txt", keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
 }

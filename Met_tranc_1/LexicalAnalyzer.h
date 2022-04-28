@@ -215,7 +215,7 @@ public:
                         if (alphabet.at(j) == word[0])//Если мы нашли в алфавите первый символ слова то это точно идентификатор
                         {
                             token1 = identifier.search_str(word);
-                            cout<< word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            //cout<< word << " (" << token1.i << "," << token1.j << ")" << endl;
                             token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
@@ -223,13 +223,13 @@ public:
                         if (numbers.at(j) == word[0])//Если мы нашли в перчне циферок первый символ слова то это точно константа
                         {
                             token1 = constants.search_str(word);
-                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            //cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
                             token_out << token1.i << " " << token1.j <<endl;
                             word.clear();
                         }
                     
                 }
-                cout << str << " (" << token.i << "," << token.j << ")" << endl;
+                //cout << str << " (" << token.i << "," << token.j << ")" << endl;
                 token_out <<token.i<<" "<<token.j<< endl;
                 break; 
             }
@@ -243,7 +243,7 @@ public:
                         if (alphabet.at(j) == word[0])//Если мы нашли в алфавите первый символ слова то это точно идентификатор
                         {
                             token1 = identifier.search_str(word);
-                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            //cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
                             token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
@@ -251,7 +251,7 @@ public:
                         if (numbers.at(j) == word[0])//Если мы нашли в перчне циферок первый символ слова то это точно константа
                         {
                             token1 = constants.search_str(word);
-                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            //cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
                             token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
@@ -262,7 +262,7 @@ public:
                     token1 = oper_signs_compare.search_str(str+next);//если следующий символ тоже знак сравнения 
                     if (token1.j == -1)
                     {
-                        cout << str << " (" << token.i << "," << token.j << ")" << endl;
+                        //cout << str << " (" << token.i << "," << token.j << ")" << endl;
                         token_out << token.i << " " << token.j << endl;
                     }
                     else 
@@ -271,7 +271,7 @@ public:
                 else
                 {
                     token = oper_signs_compare.search_str(sign_comp+letter);
-                    cout << sign_comp + letter << " (" << token.i << "," << token.j << ")" << endl;
+                    //cout << sign_comp + letter << " (" << token.i << "," << token.j << ")" << endl;
                     token_out  << " (" << token.i << " " << token.j <<endl;
                     sign_comp.clear();
                 }
@@ -289,7 +289,7 @@ public:
                         if (alphabet.at(j) == word[0])//Если мы нашли в алфавите первый символ слова то это точно идентификатор
                         {
                             token1 = identifier.search_str(word);
-                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            //cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
                             token_out  << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
@@ -297,13 +297,13 @@ public:
                         if (numbers.at(j) == word[0])//Если мы нашли в перчне циферок первый символ слова то это точно константа
                         {
                             token1 = constants.search_str(word);
-                            cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
+                            //cout << word << " (" << token1.i << "," << token1.j << ")" << endl;
                             token_out << token1.i << " " << token1.j << endl;
                             word.clear();
                         }
 
                 }
-                cout << str << " (" << token.i << "," << token.j << ")" << endl;
+                //cout << str << " (" << token.i << "," << token.j << ")" << endl;
                 token_out << token.i << " " << token.j  << endl;
                 break;
             }
@@ -312,10 +312,11 @@ public:
             if(letter!='\n') word = word + letter;
 
             token = keywords.search_str(word);
-            if (token.j != -1){ cout << word << " (" << token.i << "," << token.j << ")" << endl; token_out << token.i << " " << token.j<< endl; word.clear(); break;  }//Если нашли слово среди ключевых            
+            if (token.j != -1){ /*cout << word << " (" << token.i << "," << token.j << ")" << endl;*/ token_out << token.i << " " << token.j << endl; word.clear(); break; }//Если нашли слово среди ключевых            
             
             break;
         }
+        
     }
 
     void run_dfa(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)
@@ -326,6 +327,8 @@ public:
         string word;
         ifstream code;
         code.open("code.txt");
+        ofstream errors_file;
+        errors_file.open("Errors.txt");
         int  line = 1;
         string code_text;
         string str;
@@ -350,13 +353,17 @@ public:
             {
                 if (k == -1)
                 {
-                    cout << "ERROR in line " << line;
+                    errors_file << "ERROR in line " << line << endl;
+                    cout << "ERROR in line " << line<< endl;
+                    errors++;
                     break;
                 }
                 take_token(token_out, letter, code_text[j + 1], sign_comp, word, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
             }
         }
         token_out.close();
+        errors_file.close();
     }
+
 
 };
