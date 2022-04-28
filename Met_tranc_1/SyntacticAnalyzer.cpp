@@ -21,24 +21,24 @@ struct element_parser
 class SyntacticAnalyzer
 {
 private:
-	int now_state;//текущее состояние
-	stack <int> st_int;//состояние
+	int now_state;//ГІГҐГЄГіГ№ГҐГҐ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ
+	stack <int> st_int;//Г±Г®Г±ГІГ®ГїГ­ГЁГҐ
 	vector<Token> TokensInput;
-	vector <element_parser> table_parser;//таблица 
+	vector <element_parser> table_parser;//ГІГ ГЎГ«ГЁГ¶Г  
 	void TokenInput()
 	{
 		int i, j;
 		ifstream table_file;
 		table_file.open("Tokens.txt");
 		while (table_file >> i >> j)
-		{			
+		{
 			TokensInput.push_back({ i,j });
 		}
 	}
-	bool check(Token this_token, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)//если введенный токен есть в текущей позиции таблицы то все круто 
+	bool check(Token this_token, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)//ГҐГ±Г«ГЁ ГўГўГҐГ¤ГҐГ­Г­Г»Г© ГІГ®ГЄГҐГ­ ГҐГ±ГІГј Гў ГІГҐГЄГіГ№ГҐГ© ГЇГ®Г§ГЁГ¶ГЁГЁ ГІГ ГЎГ«ГЁГ¶Г» ГІГ® ГўГ±ГҐ ГЄГ°ГіГІГ® 
 	{
 		string command;
-		command= keywords.search_num(this_token);
+		command = keywords.search_num(this_token);
 		if (command == "NULL") command = separators.search_num(this_token);
 		if (command == "NULL") command = oper_signs_compare.search_num(this_token);
 		if (command == "NULL") command = oper_signs_arith.search_num(this_token);
@@ -50,54 +50,54 @@ private:
 		if (command == "NULL")
 		{
 			command = identifier.search_num(this_token);
-			if (command != "NULL" && command!="main") command = "var";
+			if (command != "NULL" && command != "main") command = "var";
 		}
-		for (string token : table_parser[now_state].tokens)//Из списка-коллекции table_parser[now_state].tokens на каждом шаге-итерации берется очередной элемент этого списка и присваивается переменной token
+		for (string token : table_parser[now_state].tokens)//Г€Г§ Г±ГЇГЁГ±ГЄГ -ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ table_parser[now_state].tokens Г­Г  ГЄГ Г¦Г¤Г®Г¬ ГёГ ГЈГҐ-ГЁГІГҐГ°Г Г¶ГЁГЁ ГЎГҐГ°ГҐГІГ±Гї Г®Г·ГҐГ°ГҐГ¤Г­Г®Г© ГЅГ«ГҐГ¬ГҐГ­ГІ ГЅГІГ®ГЈГ® Г±ГЇГЁГ±ГЄГ  ГЁ ГЇГ°ГЁГ±ГўГ ГЁГўГ ГҐГІГ±Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г© token
 		{
 			if (command == token)    return true;
 		}
 		return false;
 	}
-	int analizer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier, ofstream &errors_file)
+	int analizer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& errors_file)
 	{
 		now_state = 0;
 		st_int.push(-1);
 		int stat = 0;
 		while (stat < TokensInput.size())
 		{
-			if (check(TokensInput[stat], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier))//текущий терминал вообще есть в табличке? Если да то все круто, если нет и error=1 то все плохо
+			if (check(TokensInput[stat], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier))//ГІГҐГЄГіГ№ГЁГ© ГІГҐГ°Г¬ГЁГ­Г Г« ГўГ®Г®ГЎГ№ГҐ ГҐГ±ГІГј Гў ГІГ ГЎГ«ГЁГ·ГЄГҐ? Г…Г±Г«ГЁ Г¤Г  ГІГ® ГўГ±ГҐ ГЄГ°ГіГІГ®, ГҐГ±Г«ГЁ Г­ГҐГІ ГЁ error=1 ГІГ® ГўГ±ГҐ ГЇГ«Г®ГµГ®
 			{
-				if (table_parser[now_state].accept)//Если терминал
+				if (table_parser[now_state].accept)//Г…Г±Г«ГЁ ГІГҐГ°Г¬ГЁГ­Г Г«
 				{
 					++stat;
 				}
 				if (table_parser[now_state].sta)
 				{
-					st_int.push(now_state + 1);//добавляем следующую строку таблицы в стэк
+					st_int.push(now_state + 1);//Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГіГѕ Г±ГІГ°Г®ГЄГі ГІГ ГЎГ«ГЁГ¶Г» Гў Г±ГІГЅГЄ
 				}
-				if (table_parser[now_state].jump >= 0)//если -1 то надо брать из стека, а так вес как обычно
+				if (table_parser[now_state].jump >= 0)//ГҐГ±Г«ГЁ -1 ГІГ® Г­Г Г¤Г® ГЎГ°Г ГІГј ГЁГ§ Г±ГІГҐГЄГ , Г  ГІГ ГЄ ГўГҐГ± ГЄГ ГЄ Г®ГЎГ»Г·Г­Г®
 				{
-					now_state = table_parser[now_state].jump;//переходим к другому состоянию
+					now_state = table_parser[now_state].jump;//ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ ГЄ Г¤Г°ГіГЈГ®Г¬Гі Г±Г®Г±ГІГ®ГїГ­ГЁГѕ
 				}
-				else if (table_parser[now_state].ret)//а это как раз jump=-1
+				else if (table_parser[now_state].ret)//Г  ГЅГІГ® ГЄГ ГЄ Г°Г Г§ jump=-1
 				{
-					now_state = st_int.top();//берем значение из стека
+					now_state = st_int.top();//ГЎГҐГ°ГҐГ¬ Г§Г­Г Г·ГҐГ­ГЁГҐ ГЁГ§ Г±ГІГҐГЄГ 
 					st_int.pop();
 				}
-			
+
 
 			}
 
 
 			else
 			{
-				if (table_parser[now_state].error)//Если ничего не нашли а error=1 то чет не то происходит
+				if (table_parser[now_state].error)//Г…Г±Г«ГЁ Г­ГЁГ·ГҐГЈГ® Г­ГҐ Г­Г ГёГ«ГЁ Г  error=1 ГІГ® Г·ГҐГІ Г­ГҐ ГІГ® ГЇГ°Г®ГЁГ±ГµГ®Г¤ГЁГІ
 				{
 					errors_file << "Error. Unexpected token: (" << TokensInput[stat].i << "," << TokensInput[stat].j << ")" << endl;
-					cout << "Error. Unexpected token: ("<< TokensInput[stat].i<<","<< TokensInput[stat].j<<")"<< endl;
+					cout << "Error. Unexpected token: (" << TokensInput[stat].i << "," << TokensInput[stat].j << ")" << endl;
 					return -1;
 				}
-				else //Есл ничего не нашли а error=0 то просто смотрим следующую строку таблицы, там может быть все ок
+				else //Г…Г±Г« Г­ГЁГ·ГҐГЈГ® Г­ГҐ Г­Г ГёГ«ГЁ Г  error=0 ГІГ® ГЇГ°Г®Г±ГІГ® Г±Г¬Г®ГІГ°ГЁГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГіГѕ Г±ГІГ°Г®ГЄГі ГІГ ГЎГ«ГЁГ¶Г», ГІГ Г¬ Г¬Г®Г¦ГҐГІ ГЎГ»ГІГј ГўГ±ГҐ Г®ГЄ
 				{
 					++now_state;
 				}
@@ -130,7 +130,10 @@ private:
 	void check_situation(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& errors_file)
 	{
 		bool is_it_while = false;
-		vector <int> var_in_while;
+		int nested_while = 0;
+		bool first_while = false;
+		vector <vector<int>> var_in_while;
+		var_in_while.resize(1);
 		int round_brackets_balance = 0;
 		int curly_brackets_balance = 0;
 		int curly_brackets_balance_while = 0;
@@ -139,39 +142,53 @@ private:
 			string command;
 			Token this_token = TokensInput[i];
 			command = get_name(this_token, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
-			//Нашли имя идентификатора/чего бы то ни было с чем работаем и пустили проверку
+			//ГЌГ ГёГ«ГЁ ГЁГ¬Гї ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г°Г /Г·ГҐГЈГ® ГЎГ» ГІГ® Г­ГЁ ГЎГ»Г«Г® Г± Г·ГҐГ¬ Г°Г ГЎГ®ГІГ ГҐГ¬ ГЁ ГЇГіГ±ГІГЁГ«ГЁ ГЇГ°Г®ГўГҐГ°ГЄГі
 			if (command == "while")
 			{
 				round_brackets_balance = 0;
-				curly_brackets_balance_while=0;
+				curly_brackets_balance_while = 0;
 				is_it_while = true;
+				first_while = true;
 			}
-			
-			if (is_it_while)//если мы в цикле
+
+			if (is_it_while)//ГҐГ±Г«ГЁ Г¬Г» Гў Г¶ГЁГЄГ«ГҐ
 			{
+				if (command == "while" && !first_while) {
+					++nested_while;
+					vector <int> tmp = var_in_while[nested_while - 1];
+					var_in_while.push_back(tmp);
+				}
+				first_while = false;
 				if (command == "(")	round_brackets_balance++;
 				if (command == ")")	round_brackets_balance--;
 				if (command == "{")	curly_brackets_balance_while++;
-				if (command == "}" && round_brackets_balance == 0) 
-				{ 
-					is_it_while = false; 
-					curly_brackets_balance_while--; 
-					for(int s=0; s< var_in_while.size(); s++)
-					{
-						identifier.add_ident(var_in_while[s], 0, 0);
+				if (command == "}" && round_brackets_balance == 0)
+				{
+					is_it_while = false;
+					if (nested_while > 0) {
+						is_it_while = true;
 					}
-					var_in_while.clear();
+					curly_brackets_balance_while--;
+					for (int s = 0; s < var_in_while[nested_while].size(); s++)
+					{
+						identifier.add_ident(var_in_while[nested_while][s], 0, 0);
+					}
+					var_in_while[nested_while].pop_back();
+					if (nested_while > 0)
+						--nested_while;
+					else
+						var_in_while.resize(1);
 				}
 			}
-			else//если вне цикла
+			else//ГҐГ±Г«ГЁ ГўГ­ГҐ Г¶ГЁГЄГ«Г 
 			{
 				if (command == "{") curly_brackets_balance++;
 				if (command == "}") curly_brackets_balance--;
 			}
 			if (command == "int")
 			{
-				
-				command = get_name(TokensInput[i+2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+
+				command = get_name(TokensInput[i + 2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
 				if (command == "=")
 				{
 					command = get_name(TokensInput[i + 3], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
@@ -179,33 +196,35 @@ private:
 				}
 				else
 					identifier.add_ident(TokensInput[i + 1].i, 0, 1);
-				if (is_it_while) var_in_while.push_back(TokensInput[i + 1].i);//если мы внутри цикла то пихаем переменную в стек
+				if (is_it_while) {
+					var_in_while[nested_while].push_back(TokensInput[i + 1].i);
+				}//ГҐГ±Г«ГЁ Г¬Г» ГўГ­ГіГІГ°ГЁ Г¶ГЁГЄГ«Г  ГІГ® ГЇГЁГµГ ГҐГ¬ ГЇГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ Гў Г±ГІГҐГЄ
 			}
 
-			if (command == "var")//проверка инициализировали ли мы переменную
+			if (command == "var")//ГЇГ°Г®ГўГҐГ°ГЄГ  ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§ГЁГ°Г®ГўГ Г«ГЁ Г«ГЁ Г¬Г» ГЇГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ
 			{
 				if (identifier.check_int(TokensInput[i]) == 0)
 				{
 					errors_file << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized." << endl;
-					cout << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized."<<endl;
+					cout << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized." << endl;
 				}
 			}
 		}
-		if (curly_brackets_balance_while != 0 || curly_brackets_balance != 0)
+		if (nested_while <= 0 && (curly_brackets_balance_while != 0 || curly_brackets_balance != 0))
 		{
-			errors_file<< "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
+			errors_file << "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
 			cout << "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
 		}
 
-		
+
 	}
 public:
-	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)//Инициализация таблицы
+	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)//Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї ГІГ ГЎГ«ГЁГ¶Г»
 	{
 		ofstream errors_file;
-		errors_file.open("Errors.txt", ios::app);//Дописать в файл
-		TokenInput();//для входного массива токенов
-		string el[7];//для каждого отдельного куска строки (терминал, куда прыгнуть, accept и т д)
+		errors_file.open("Errors.txt", ios::app);//Г„Г®ГЇГЁГ±Г ГІГј Гў ГґГ Г©Г«
+		TokenInput();//Г¤Г«Гї ГўГµГ®Г¤Г­Г®ГЈГ® Г¬Г Г±Г±ГЁГўГ  ГІГ®ГЄГҐГ­Г®Гў
+		string el[7];//Г¤Г«Гї ГЄГ Г¦Г¤Г®ГЈГ® Г®ГІГ¤ГҐГ«ГјГ­Г®ГЈГ® ГЄГіГ±ГЄГ  Г±ГІГ°Г®ГЄГЁ (ГІГҐГ°Г¬ГЁГ­Г Г«, ГЄГіГ¤Г  ГЇГ°Г»ГЈГ­ГіГІГј, accept ГЁ ГІ Г¤)
 		ifstream table_file;
 		table_file.open(file_name);
 		while (!table_file.eof())
@@ -226,7 +245,7 @@ public:
 				}
 
 				case 1:
-					elem.jump= std::stoi(el[1]);//преобразование в int 
+					elem.jump = std::stoi(el[1]);//ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГҐ Гў int 
 					break;
 
 				case 2:
@@ -249,7 +268,7 @@ public:
 			}
 			table_parser.push_back(elem);
 		}
-		if (!analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file))//проверка по таблице
+		if (!analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file))//ГЇГ°Г®ГўГҐГ°ГЄГ  ГЇГ® ГІГ ГЎГ«ГЁГ¶ГҐ
 		{
 			check_situation(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file);
 		}
@@ -257,5 +276,5 @@ public:
 		errors_file.close();
 	}
 
-	
+
 };
