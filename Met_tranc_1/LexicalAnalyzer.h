@@ -272,7 +272,7 @@ public:
                 {
                     token = oper_signs_compare.search_str(sign_comp+letter);
                     //cout << sign_comp + letter << " (" << token.i << "," << token.j << ")" << endl;
-                    token_out  << " (" << token.i << " " << token.j <<endl;
+                    token_out   << token.i << " " << token.j <<endl;
                     sign_comp.clear();
                 }
                 break; 

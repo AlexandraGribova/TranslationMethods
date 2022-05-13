@@ -161,6 +161,11 @@ public:
             return identifier[token.i].name;
         return "NULL";
     }
+    bool get_type(Token token)
+    {
+        if (identifier[token.i].type==1) return true;
+        return false;
+    }
     void add_ident(int i, bool value_exist, bool type, int value = 0)//передаем номер эл-та в массиве i
     {
         if (value_exist)

@@ -1,9 +1,9 @@
 int main()
 {
-int b;
-while(1)
+int b=1;
+while(b<=1)
 {
-int s=3;
+int s=3;s=1+s;b=1+b;
 }
-s=2;
+b=2+b;
 }

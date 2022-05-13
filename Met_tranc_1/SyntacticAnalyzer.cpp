@@ -1,9 +1,9 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 #include <vector>
 #include <iostream>
 #include <sstream>
-#include<fstream>
+#include <fstream>
 #include <stack>
 #include "Tables.h"
 using namespace std;
@@ -21,24 +21,24 @@ struct element_parser
 class SyntacticAnalyzer
 {
 private:
-	int now_state;//текущее состояние
-	stack <int> st_int;//состояние
+	int now_state;//ГІГҐГЄГіГ№ГҐГҐ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ
+	stack <int> st_int;//Г±Г®Г±ГІГ®ГїГ­ГЁГҐ
 	vector<Token> TokensInput;
-	vector <element_parser> table_parser;//таблица 
+	vector <element_parser> table_parser;//ГІГ ГЎГ«ГЁГ¶Г  
 	void TokenInput()
 	{
 		int i, j;
 		ifstream table_file;
 		table_file.open("Tokens.txt");
 		while (table_file >> i >> j)
-		{			
+		{
 			TokensInput.push_back({ i,j });
 		}
 	}
-	bool check(Token this_token, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)//если введенный токен есть в текущей позиции таблицы то все круто 
+	bool check(Token this_token, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)//ГҐГ±Г«ГЁ ГўГўГҐГ¤ГҐГ­Г­Г»Г© ГІГ®ГЄГҐГ­ ГҐГ±ГІГј Гў ГІГҐГЄГіГ№ГҐГ© ГЇГ®Г§ГЁГ¶ГЁГЁ ГІГ ГЎГ«ГЁГ¶Г» ГІГ® ГўГ±ГҐ ГЄГ°ГіГІГ® 
 	{
 		string command;
-		command= keywords.search_num(this_token);
+		command = keywords.search_num(this_token);
 		if (command == "NULL") command = separators.search_num(this_token);
 		if (command == "NULL") command = oper_signs_compare.search_num(this_token);
 		if (command == "NULL") command = oper_signs_arith.search_num(this_token);
@@ -50,54 +50,54 @@ private:
 		if (command == "NULL")
 		{
 			command = identifier.search_num(this_token);
-			if (command != "NULL" && command!="main") command = "var";
+			if (command != "NULL" && command != "main") command = "var";
 		}
-		for (string token : table_parser[now_state].tokens)//Из списка-коллекции table_parser[now_state].tokens на каждом шаге-итерации берется очередной элемент этого списка и присваивается переменной token
+		for (string token : table_parser[now_state].tokens)//Г€Г§ Г±ГЇГЁГ±ГЄГ -ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ table_parser[now_state].tokens Г­Г  ГЄГ Г¦Г¤Г®Г¬ ГёГ ГЈГҐ-ГЁГІГҐГ°Г Г¶ГЁГЁ ГЎГҐГ°ГҐГІГ±Гї Г®Г·ГҐГ°ГҐГ¤Г­Г®Г© ГЅГ«ГҐГ¬ГҐГ­ГІ ГЅГІГ®ГЈГ® Г±ГЇГЁГ±ГЄГ  ГЁ ГЇГ°ГЁГ±ГўГ ГЁГўГ ГҐГІГ±Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г© token
 		{
 			if (command == token)    return true;
 		}
 		return false;
 	}
-	int analizer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier, ofstream &errors_file)
+	int analizer(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& errors_file)
 	{
 		now_state = 0;
 		st_int.push(-1);
 		int stat = 0;
 		while (stat < TokensInput.size())
 		{
-			if (check(TokensInput[stat], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier))//текущий терминал вообще есть в табличке? Если да то все круто, если нет и error=1 то все плохо
+			if (check(TokensInput[stat], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier))//ГІГҐГЄГіГ№ГЁГ© ГІГҐГ°Г¬ГЁГ­Г Г« ГўГ®Г®ГЎГ№ГҐ ГҐГ±ГІГј Гў ГІГ ГЎГ«ГЁГ·ГЄГҐ? Г…Г±Г«ГЁ Г¤Г  ГІГ® ГўГ±ГҐ ГЄГ°ГіГІГ®, ГҐГ±Г«ГЁ Г­ГҐГІ ГЁ error=1 ГІГ® ГўГ±ГҐ ГЇГ«Г®ГµГ®
 			{
-				if (table_parser[now_state].accept)//Если терминал
+				if (table_parser[now_state].accept)//Г…Г±Г«ГЁ ГІГҐГ°Г¬ГЁГ­Г Г«
 				{
 					++stat;
 				}
 				if (table_parser[now_state].sta)
 				{
-					st_int.push(now_state + 1);//добавляем следующую строку таблицы в стэк
+					st_int.push(now_state + 1);//Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГіГѕ Г±ГІГ°Г®ГЄГі ГІГ ГЎГ«ГЁГ¶Г» Гў Г±ГІГЅГЄ
 				}
-				if (table_parser[now_state].jump >= 0)//если -1 то надо брать из стека, а так вес как обычно
+				if (table_parser[now_state].jump >= 0)//ГҐГ±Г«ГЁ -1 ГІГ® Г­Г Г¤Г® ГЎГ°Г ГІГј ГЁГ§ Г±ГІГҐГЄГ , Г  ГІГ ГЄ ГўГҐГ± ГЄГ ГЄ Г®ГЎГ»Г·Г­Г®
 				{
-					now_state = table_parser[now_state].jump;//переходим к другому состоянию
+					now_state = table_parser[now_state].jump;//ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ ГЄ Г¤Г°ГіГЈГ®Г¬Гі Г±Г®Г±ГІГ®ГїГ­ГЁГѕ
 				}
-				else if (table_parser[now_state].ret)//а это как раз jump=-1
+				else if (table_parser[now_state].ret)//Г  ГЅГІГ® ГЄГ ГЄ Г°Г Г§ jump=-1
 				{
-					now_state = st_int.top();//берем значение из стека
+					now_state = st_int.top();//ГЎГҐГ°ГҐГ¬ Г§Г­Г Г·ГҐГ­ГЁГҐ ГЁГ§ Г±ГІГҐГЄГ 
 					st_int.pop();
 				}
-			
+
 
 			}
 
 
 			else
 			{
-				if (table_parser[now_state].error)//Если ничего не нашли а error=1 то чет не то происходит
+				if (table_parser[now_state].error)//Г…Г±Г«ГЁ Г­ГЁГ·ГҐГЈГ® Г­ГҐ Г­Г ГёГ«ГЁ Г  error=1 ГІГ® Г·ГҐГІ Г­ГҐ ГІГ® ГЇГ°Г®ГЁГ±ГµГ®Г¤ГЁГІ
 				{
 					errors_file << "Error. Unexpected token: (" << TokensInput[stat].i << "," << TokensInput[stat].j << ")" << endl;
-					cout << "Error. Unexpected token: ("<< TokensInput[stat].i<<","<< TokensInput[stat].j<<")"<< endl;
+					cout << "Error. Unexpected token: (" << TokensInput[stat].i << "," << TokensInput[stat].j << ")" << endl;
 					return -1;
 				}
-				else //Есл ничего не нашли а error=0 то просто смотрим следующую строку таблицы, там может быть все ок
+				else //Г…Г±Г« Г­ГЁГ·ГҐГЈГ® Г­ГҐ Г­Г ГёГ«ГЁ Г  error=0 ГІГ® ГЇГ°Г®Г±ГІГ® Г±Г¬Г®ГІГ°ГЁГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГіГѕ Г±ГІГ°Г®ГЄГі ГІГ ГЎГ«ГЁГ¶Г», ГІГ Г¬ Г¬Г®Г¦ГҐГІ ГЎГ»ГІГј ГўГ±ГҐ Г®ГЄ
 				{
 					++now_state;
 				}
@@ -127,8 +127,9 @@ private:
 		return command;
 	}
 
-	void check_situation(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& errors_file)
+	bool check_situation(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& errors_file)
 	{
+		bool isError = false;
 		bool is_it_while = false;
 		vector <int> var_in_while;
 		int round_brackets_balance = 0;
@@ -139,73 +140,301 @@ private:
 			string command;
 			Token this_token = TokensInput[i];
 			command = get_name(this_token, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
-			//Нашли имя идентификатора/чего бы то ни было с чем работаем и пустили проверку
+			//ГЌГ ГёГ«ГЁ ГЁГ¬Гї ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г°Г /Г·ГҐГЈГ® ГЎГ» ГІГ® Г­ГЁ ГЎГ»Г«Г® Г± Г·ГҐГ¬ Г°Г ГЎГ®ГІГ ГҐГ¬ ГЁ ГЇГіГ±ГІГЁГ«ГЁ ГЇГ°Г®ГўГҐГ°ГЄГі
 			if (command == "while")
 			{
 				round_brackets_balance = 0;
-				curly_brackets_balance_while=0;
+				curly_brackets_balance_while = 0;
 				is_it_while = true;
 			}
-			
-			if (is_it_while)//если мы в цикле
+
+			if (is_it_while)//ГҐГ±Г«ГЁ Г¬Г» Гў Г¶ГЁГЄГ«ГҐ
 			{
 				if (command == "(")	round_brackets_balance++;
 				if (command == ")")	round_brackets_balance--;
 				if (command == "{")	curly_brackets_balance_while++;
-				if (command == "}" && round_brackets_balance == 0) 
-				{ 
-					is_it_while = false; 
-					curly_brackets_balance_while--; 
-					for(int s=0; s< var_in_while.size(); s++)
+				if (command == "}" && round_brackets_balance == 0)
+				{
+					is_it_while = false;
+					curly_brackets_balance_while--;
+					for (int s = 0; s < var_in_while.size(); s++)
 					{
 						identifier.add_ident(var_in_while[s], 0, 0);
 					}
 					var_in_while.clear();
 				}
 			}
-			else//если вне цикла
+			else//ГҐГ±Г«ГЁ ГўГ­ГҐ Г¶ГЁГЄГ«Г 
 			{
 				if (command == "{") curly_brackets_balance++;
 				if (command == "}") curly_brackets_balance--;
 			}
 			if (command == "int")
 			{
-				
-				command = get_name(TokensInput[i+2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+
+				command = get_name(TokensInput[i + 2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
 				if (command == "=")
 				{
 					command = get_name(TokensInput[i + 3], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
-					identifier.add_ident(TokensInput[i + 1].i, 1, 1, atoi(command.c_str()));
+					if (identifier.get_type(TokensInput[i + 1]) == false)
+					 identifier.add_ident(TokensInput[i + 1].i, 1, 1, atoi(command.c_str()));
+					else cout << "Error. Variable has already initialised. " << endl;
 				}
 				else
-					identifier.add_ident(TokensInput[i + 1].i, 0, 1);
-				if (is_it_while) var_in_while.push_back(TokensInput[i + 1].i);//если мы внутри цикла то пихаем переменную в стек
+				{
+					if (identifier.get_type(TokensInput[i + 1]) == false)
+						identifier.add_ident(TokensInput[i + 1].i, 0, 1);
+					else cout << "Error. Variable has already initialised. " << endl;
+				}
+				if (is_it_while) var_in_while.push_back(TokensInput[i + 1].i);//ГҐГ±Г«ГЁ Г¬Г» ГўГ­ГіГІГ°ГЁ Г¶ГЁГЄГ«Г  ГІГ® ГЇГЁГµГ ГҐГ¬ ГЇГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ Гў Г±ГІГҐГЄ
 			}
 
-			if (command == "var")//проверка инициализировали ли мы переменную
+			if (command == "var")//ГЇГ°Г®ГўГҐГ°ГЄГ  ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§ГЁГ°Г®ГўГ Г«ГЁ Г«ГЁ Г¬Г» ГЇГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ
 			{
 				if (identifier.check_int(TokensInput[i]) == 0)
 				{
+					isError = true;
 					errors_file << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized." << endl;
-					cout << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized."<<endl;
+					cout << "Error. Variable '" << identifier.search_num(TokensInput[i]) << "' is not initialized." << endl;
 				}
 			}
 		}
 		if (curly_brackets_balance_while != 0 || curly_brackets_balance != 0)
 		{
-			errors_file<< "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
+			isError = true;
+			errors_file << "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
 			cout << "Error. The bracket is lost. Probably cycle wasn't closed." << endl;
 		}
 
-		
+		return isError;
 	}
+
+
+	void generate_postfix_file(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& postfix_file)
+	{
+		bool is_it_while = false;
+		int label_num = 1;
+		for (int i = 0; i < TokensInput.size(); i++)
+		{
+			string command;
+			string command2;
+			string command3;
+			Token this_token = TokensInput[i];
+			command = get_name(this_token, keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+			if (command == "while")
+			{
+				is_it_while = true;
+				postfix_file << "m" << to_string(label_num) << ":" << " ";
+			}
+
+			if (is_it_while)
+			{
+				vector <string> var_in_while;
+				bool isLocal = false;
+				command = get_name(TokensInput[i + 1], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+				while (command != "}") {
+					if (command == "(") {
+						command = get_name(TokensInput[i + 2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+						if (command == "const" or command == "var")
+						{
+							int k = i + 2;
+							stack <string> postfix_stack;
+							string out_str = "";
+							while (command != ")") {
+								if (command == "var") {
+									out_str += identifier.search_num(TokensInput[k]);
+									out_str += " ";
+								}
+								else if (command == "const") {
+									out_str += constants.search_num(TokensInput[k]);
+									out_str += " ";
+								}
+								else if (command == "+" or command == "-") {
+									while (!postfix_stack.empty() && (postfix_stack.top() == "+" or postfix_stack.top() == "-")) {
+										out_str += postfix_stack.top();
+										out_str += " ";
+										postfix_stack.pop();
+									}
+									postfix_stack.push(command);
+								}
+								else if (command == "<" or command == ">" or command == ">=" or command == "<=") {
+									while (!postfix_stack.empty() &&
+										(postfix_stack.top() == "+" or postfix_stack.top() == "-"
+											or postfix_stack.top() == "<" or postfix_stack.top() == ">" or
+											postfix_stack.top() == "<=" or postfix_stack.top() == ">=")) {
+										out_str += postfix_stack.top();
+										out_str += " ";
+										postfix_stack.pop();
+									}
+									postfix_stack.push(command);
+								}
+								k++;
+								command = get_name(TokensInput[k], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+							}
+							while (!postfix_stack.empty()) {
+								out_str += postfix_stack.top();
+								out_str += " ";
+								postfix_stack.pop();
+							}
+							postfix_file << out_str << "m" << to_string(label_num + 1) << " " << "UPL" << "\n";
+							i = k + 1;
+							command = command = get_name(TokensInput[i], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+						}
+					}
+					else
+					{
+						if (command == "int" or command == "var")
+						{
+							int k;
+							if (command == "var") {
+								k = i;
+							}
+							else {
+								isLocal = true;
+								k = i + 1;
+							}
+							command2 = get_name(TokensInput[i + 1], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+							command3 = get_name(TokensInput[i + 2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+							if (command2 != "main" && command3 != ";") {
+								stack <string> postfix_stack;
+								string out_str = "";
+								command = get_name(TokensInput[k], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+								while (command != ";") {
+									if (command == "var") {
+										string post_local = "";
+										if (isLocal && count(var_in_while.begin(), var_in_while.end(), identifier.search_num(TokensInput[k])) == 0) {
+											var_in_while.push_back(identifier.search_num(TokensInput[k]));
+											isLocal = false;
+										}
+										if (count(var_in_while.begin(), var_in_while.end(), identifier.search_num(TokensInput[k])))
+											post_local = "_l";
+										out_str += post_local + identifier.search_num(TokensInput[k]);
+										out_str += " ";
+									}
+									else if (command == "const") {
+										out_str += constants.search_num(TokensInput[k]);
+										out_str += " ";
+									}
+									else if (command == "+" or command == "-") {
+										while (!postfix_stack.empty() && (postfix_stack.top() == "+" or postfix_stack.top() == "-")) {
+											out_str += postfix_stack.top();
+											out_str += " ";
+											postfix_stack.pop();
+										}
+										postfix_stack.push(command);
+									}
+									else if (command == "=") {
+										while (!postfix_stack.empty() && (postfix_stack.top() == "+" or postfix_stack.top() == "-" or postfix_stack.top() == "=")) {
+											out_str += postfix_stack.top();
+											out_str += " ";
+											postfix_stack.pop();
+										}
+										postfix_stack.push(command);
+									}
+									k++;
+									command = get_name(TokensInput[k], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+								}
+								while (!postfix_stack.empty()) {
+									out_str += postfix_stack.top();
+									out_str += " ";
+									postfix_stack.pop();
+								}
+								postfix_file << out_str << "\n";
+								i = k + 1;
+								command = get_name(TokensInput[i], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+							}
+						}
+						else
+						{
+							++i;
+							command = get_name(TokensInput[i], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+						}
+					}
+				}
+				postfix_file << "m" << to_string(label_num) << " " << "BP" << " " << "m" << to_string(label_num + 1) << ":" << "\n";
+				is_it_while = false;
+				label_num += 2;
+			}
+			else if (command == "int" or command == "var")
+			{
+				int k;
+				if (command == "var") {
+					k = i;
+				}
+				else {
+					k = i + 1;
+				}
+				command2 = get_name(TokensInput[i + 1], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+				command3 = get_name(TokensInput[i + 2], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+				if (command2 != "main" && command3 != ";") {
+					stack <string> postfix_stack;
+					string out_str = "";
+					command = get_name(TokensInput[k], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+					while (command != ";") {
+						if (command == "var") {
+							out_str += identifier.search_num(TokensInput[k]);
+							out_str += " ";
+						}
+						else if (command == "const") {
+							out_str += constants.search_num(TokensInput[k]);
+							out_str += " ";
+						}
+						/*else if (command == "(") {
+							postfix_stack.push(command);
+						}
+						else if (command == ")") {
+							while (postfix_stack.top() != "(") {
+								out_str += postfix_stack.top();
+								out_str += " ";
+								postfix_stack.pop();
+								if (postfix_stack.empty()) {
+									cout << endl << "ERROR???" << endl;
+									exit(-1);
+								}
+							}
+							postfix_stack.pop();
+						}*/
+						else if (command == "+" or command == "-") {
+							while (!postfix_stack.empty() && (postfix_stack.top() == "+" or postfix_stack.top() == "-")) {
+								out_str += postfix_stack.top();
+								out_str += " ";
+								postfix_stack.pop();
+							}
+							postfix_stack.push(command);
+						}
+						else if (command == "=") {
+							while (!postfix_stack.empty() && (postfix_stack.top() == "+" or postfix_stack.top() == "-" or postfix_stack.top() == "=")) {
+								out_str += postfix_stack.top();
+								out_str += " ";
+								postfix_stack.pop();
+							}
+							postfix_stack.push(command);
+						}
+						k++;
+						command = get_name(TokensInput[k], keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier);
+					}
+					while (!postfix_stack.empty()) {
+						out_str += postfix_stack.top();
+						out_str += " ";
+						postfix_stack.pop();
+					}
+					postfix_file << out_str << "\n";
+					i = k;
+				}
+			}
+		}
+	}
+
+
 public:
-	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants &constants, VariableTableIdentifier &identifier)//Инициализация таблицы
+	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)//Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї ГІГ ГЎГ«ГЁГ¶Г»
 	{
 		ofstream errors_file;
-		errors_file.open("Errors.txt", ios::app);//Дописать в файл
-		TokenInput();//для входного массива токенов
-		string el[7];//для каждого отдельного куска строки (терминал, куда прыгнуть, accept и т д)
+		errors_file.open("Errors.txt", ios::app);//Г„Г®ГЇГЁГ±Г ГІГј Гў ГґГ Г©Г«
+		ofstream postfix_file;
+		postfix_file.open("postfix.txt");
+		TokenInput();//Г¤Г«Гї ГўГµГ®Г¤Г­Г®ГЈГ® Г¬Г Г±Г±ГЁГўГ  ГІГ®ГЄГҐГ­Г®Гў
+		string el[7];//Г¤Г«Гї ГЄГ Г¦Г¤Г®ГЈГ® Г®ГІГ¤ГҐГ«ГјГ­Г®ГЈГ® ГЄГіГ±ГЄГ  Г±ГІГ°Г®ГЄГЁ (ГІГҐГ°Г¬ГЁГ­Г Г«, ГЄГіГ¤Г  ГЇГ°Г»ГЈГ­ГіГІГј, accept ГЁ ГІ Г¤)
 		ifstream table_file;
 		table_file.open(file_name);
 		while (!table_file.eof())
@@ -226,7 +455,7 @@ public:
 				}
 
 				case 1:
-					elem.jump= std::stoi(el[1]);//преобразование в int 
+					elem.jump = std::stoi(el[1]);//ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГҐ Гў int 
 					break;
 
 				case 2:
@@ -249,13 +478,17 @@ public:
 			}
 			table_parser.push_back(elem);
 		}
-		if (!analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file))//проверка по таблице
+		if (!analizer(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file))//ГЇГ°Г®ГўГҐГ°ГЄГ  ГЇГ® ГІГ ГЎГ«ГЁГ¶ГҐ
 		{
-			check_situation(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file);
+			bool isError = check_situation(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file);
+			if (!isError) {
+				generate_postfix_file(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, postfix_file);
+				postfix_file.close();
+			}
 		}
-
+		postfix_file.close();
 		errors_file.close();
 	}
 
-	
+
 };
