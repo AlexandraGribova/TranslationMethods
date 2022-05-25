@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Generator.cpp" />
     <ClCompile Include="Met_tranc_1.cpp" />
     <ClCompile Include="SyntacticAnalyzer.cpp" />
   </ItemGroup>

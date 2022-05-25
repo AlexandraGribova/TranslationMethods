@@ -1,9 +1,6 @@
 int main()
 {
-int b=1;
-while(b<=1)
-{
-int s=3;s=1+s;b=1+b;
-}
-b=2+b;
+int a = 3;
+int b = 2;
+int x = a + b - 5 - 10 + 15;
 }

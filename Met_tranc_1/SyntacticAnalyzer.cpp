@@ -210,7 +210,7 @@ private:
 	}
 
 
-	void generate_postfix_file(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& postfix_file)
+	void generate_postfix_file(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, ofstream& postfix_file, stack <string>& postfix_stack)
 	{
 		bool is_it_while = false;
 		int label_num = 1;
@@ -238,7 +238,7 @@ private:
 						if (command == "const" or command == "var")
 						{
 							int k = i + 2;
-							stack <string> postfix_stack;
+							//stack <string> postfix_stack;
 							string out_str = "";
 							while (command != ")") {
 								if (command == "var") {
@@ -427,7 +427,7 @@ private:
 
 
 public:
-	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier)//Èíèöèàëèçàöèÿ òàáëèöû
+	SyntacticAnalyzer(string file_name, ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stack <string> &postfix_stack)//Èíèöèàëèçàöèÿ òàáëèöû
 	{
 		ofstream errors_file;
 		errors_file.open("Errors.txt", ios::app);//Äîïèñàòü â ôàéë
@@ -482,7 +482,7 @@ public:
 		{
 			bool isError = check_situation(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, errors_file);
 			if (!isError) {
-				generate_postfix_file(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, postfix_file);
+				generate_postfix_file(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, postfix_file, postfix_stack);
 				postfix_file.close();
 			}
 		}

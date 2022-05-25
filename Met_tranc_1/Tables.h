@@ -127,6 +127,17 @@ public:
         return "NULL";
     }
 
+    Token search_str_without_add(string data)//поиск среди констант по имени, если не найдена, то добавление
+    {
+        Token token;
+        for (int i = 0; i < constants.size(); i++)
+            if (constants[i] == data)
+                return  Token(i, CONSTANT);
+       
+        token.j = -1;
+        return token;
+    }
+
 };
 
 
@@ -139,6 +150,11 @@ public:
     {
         if (identifier[token.i].type == true) return 1;
         else return 0;
+    }
+
+    int GetSize()
+    {
+        return identifier.size();
     }
 
     Token search_str(string data)//поиск среди констант по имени, если не найдена, то добавление
@@ -179,5 +195,15 @@ public:
     Identifier get(int i)
     {
         return identifier[i];
+    }
+
+    Token search_str_without_add(string data)//поиск среди констант по имени, если не найдена, то добавление
+    {
+        Token token;
+        for (int i = 0; i < identifier.size(); i++)
+            if (identifier[i].name == data)
+               return token = Token(i, VARIABLE);
+        token.j = -1;
+        return token;
     }
 };
