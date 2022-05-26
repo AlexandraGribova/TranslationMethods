@@ -7,15 +7,17 @@ using namespace std;
 static class Generator
 {
 private:
-	void init_main_process( ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stringstream& result)
+	void init_main_process(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stringstream& result)
 	{
+		bool less;
+		bool eq;
 		stack<string> process;
 		ifstream input;
 		input.open("postfix.txt");
 		string str;
-		string word;//тут хранится слово из строки
+		string word;//ГІГіГІ ГµГ°Г Г­ГЁГІГ±Гї Г±Г«Г®ГўГ® ГЁГ§ Г±ГІГ°Г®ГЄГЁ
 		result << ".CODE" << endl;
-		result << "MAIN PROC" << endl;			
+		result << "MAIN PROC" << endl;
 		while (!input.eof())
 		{
 			getline(input, str);
@@ -23,18 +25,26 @@ private:
 			int k = 0;
 			for (std::string word; ist >> word; )
 			{
-				if (identifier.search_str_without_add(word).j != -1 || constants.search_str_without_add(word).j != -1)
+				if (identifier.search_str_without_add(word).j != -1 || constants.search_str_without_add(word).j != -1 || word.back() == ':')
 				{
-					process.push(word);
+					if (word.back() != ':')
+						process.push(word);
+					else
+						result << word << endl;
 				}
 				else
-				{					
-					string a, b; 
-					a = process.top(); process.pop();
-					b = process.top(); process.pop();
-
+				{
+					string a, b, c;
 					if (oper_signs_arith.search_str(word).j != -1)
 					{
+						a = process.top(); process.pop();
+						b = process.top(); process.pop();
+						if (a.find("DWORD") != std::string::npos) {
+							k -= 4;
+						}
+						if (b.find("DWORD") != std::string::npos) {
+							k -= 4;
+						}
 						result << "MOV EAX, " << b << endl;
 						if (word == "+")
 						{
@@ -56,15 +66,68 @@ private:
 						}
 
 					}
-					else if(oper_signs_compare.search_str(word).j != -1)
+					else if (oper_signs_compare.search_str(word).j != -1)
 					{
 						if (word == "=")
 						{
+							a = process.top(); process.pop();
+							b = process.top(); process.pop();
+							if (a.find("DWORD") != std::string::npos) {
+								k -= 4;
+							}
+							if (b.find("DWORD") != std::string::npos) {
+								k -= 4;
+							}
 							result << "MOV EAX, " << a << endl;
 							result << "MOV " << b << ", EAX" << endl;
 
 						}
+						else if (word == "<") {
+							less = true;
+							eq = false;
+						}
+						else if (word == ">") {
+							less = false;
+							eq = false;
+						}
+						else if (word == "<=") {
+							less = true;
+							eq = true;
+						}
+						else if (word == ">=") {
+							less = false;
+							eq = true;
+						}
 					}
+					else if (word == "UPL") {
+						a = process.top(); process.pop();
+						b = process.top(); process.pop();
+						c = process.top(); process.pop();
+						if (b.find("DWORD") != std::string::npos) {
+							k -= 4;
+						}
+						if (c.find("DWORD") != std::string::npos) {
+							k -= 4;
+						}
+						result << "MOV EAX, " << c << endl;
+						result << "MOV EBX, " << b << endl;
+						result << "CMP EAX, EBX" << endl;
+						if (less == false && eq == false)
+							result << "JLE " << a << endl;
+						else if (less == true && eq == false)
+							result << "JGE " << a << endl;
+						else if (less == false && eq == true)
+							result << "JL " << a << endl;
+						else
+							result << "JG " << a << endl;
+					}
+
+					else if (word == "BP") {
+						a = process.top(); process.pop();
+						result << "JMP " << a << endl;
+					}
+					else
+						process.push(word);
 				}
 			}
 
@@ -74,19 +137,19 @@ private:
 		result << "MAIN ENDP" << endl;
 		result << "END MAIN" << endl;
 	}
-	void init_data_memory(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stringstream &result)
+	void init_data_memory(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stringstream& result)
 	{
-		
+
 		result << ".DATA" << endl;
-		result << "_ST DD 6 dup(0)" << endl;//6 промежуточных 
+		result << "_ST DD 2 dup(0)" << endl; 
 		for (int i = 0; i < identifier.GetSize(); i++)
 		{
-			if(identifier.get(i).name!="main")
-				result << identifier.get(i).name <<" DD ?" << endl;
-		}			
-		
+			if (identifier.get(i).name != "main")
+				result << identifier.get(i).name << " DD ?" << endl;
+		}
+
 	}
-	
+
 	string GetAsmCodeBeg(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stack <string>& postfix_stack)
 	{
 		stringstream result;
@@ -103,9 +166,9 @@ private:
 
 	}
 public:
-	Generator(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stack <string> &postfix_stack)
+	Generator(ConstantTable keywords, ConstantTable separators, ConstantTable oper_signs_compare, ConstantTable oper_signs_arith, VariableTableConstants& constants, VariableTableIdentifier& identifier, stack <string>& postfix_stack)
 	{
 		GetAsmCodeBeg(keywords, separators, oper_signs_compare, oper_signs_arith, constants, identifier, postfix_stack);
 	}
-	
+
 };
